@@ -3,11 +3,21 @@ import React, { useState } from 'react';
 
 function App() {
   const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission later
-    console.log(question);
+    try {
+      const response = await fetch('/api/question', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question }),
+      });
+      const data = await response.json();
+      setAnswer(data.answer);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -23,6 +33,12 @@ function App() {
         />
         <button type="submit">Ask</button>
       </form>
+      {answer && (
+        <div>
+          <h2>Answer:</h2>
+          <p>{answer}</p>
+        </div>
+      )}
     </div>
   );
 }
