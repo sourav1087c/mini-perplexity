@@ -19,7 +19,7 @@ function App() {
   const [sources, setSources] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setAnswer('');
@@ -27,7 +27,7 @@ function App() {
     setError('');
     setIsLoading(true);
     try {
-      const response = await fetch('/api/question', {
+      const response = await fetch(`${API_BASE_URL}/api/question`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question }),
