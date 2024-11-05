@@ -28,15 +28,14 @@ async function performSearch(query) {
     key: apiKey,
     cx: searchEngineId,
     q: query,
-    num: 10, 
-    lr: 'lang_en', 
+    num: 10,
+    lr: 'lang_en',
     safe: 'active',
   };
 
   const response = await axios.get('https://www.googleapis.com/customsearch/v1', { params });
   return response.data;
 }
-
 
 // Helper function to format search results
 function formatSearchResults(searchResults) {
@@ -61,7 +60,7 @@ async function generateAnswer(question, searchResults) {
   ];
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: 'gpt-4',
     messages: messages,
     max_tokens: 200,
     temperature: 0,
@@ -74,19 +73,23 @@ async function generateAnswer(question, searchResults) {
 // API endpoint to handle questions
 app.post('/api/question', async (req, res) => {
   const { question } = req.body;
-  if (!question) {
+  if (!question || question.trim() === '') {
     return res.status(400).json({ error: 'Question is required' });
   }
   try {
     const searchResults = await performSearch(question);
     if (!searchResults.items || searchResults.items.length === 0) {
-      return res.status(404).json({ error: 'No search results found' });
+      return res.status(404).json({ error: 'No search results found for your query.' });
     }
     const answer = await generateAnswer(question, searchResults);
     res.json({ answer, sources: searchResults.items });
   } catch (error) {
     console.error('Error generating answer:', error.response ? error.response.data : error.message);
-    res.status(500).json({ error: 'Failed to generate answer' });
+    if (error.response && error.response.status === 429) {
+      res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    } else {
+      res.status(500).json({ error: 'An unexpected error occurred. Please try again later.' });
+    }
   }
 });
 
