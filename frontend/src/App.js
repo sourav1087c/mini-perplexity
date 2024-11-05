@@ -1,18 +1,21 @@
 // frontend/src/App.js
 
 import React, { useState } from 'react';
+import { TextField, Button, CircularProgress, Typography, Link, Container, Box } from '@mui/material';
 
 function App() {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [sources, setSources] = useState([]);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setAnswer('');
     setSources([]);
     setError('');
+    setIsLoading(true);
     try {
       const response = await fetch('/api/question', {
         method: 'POST',
@@ -30,6 +33,8 @@ function App() {
     } catch (error) {
       console.error('Error:', error);
       setError('An error occurred while fetching the answer.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -46,43 +51,60 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Mini Perplexity Q&A System</h1>
+    <Container maxWidth="md" style={{ marginTop: '20px' }}>
+      <Typography variant="h4" gutterBottom>
+        Mini Perplexity Q&A System
+      </Typography>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter your question"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          required
-          style={{ width: '300px', padding: '10px' }}
-        />
-        <button type="submit" style={{ padding: '10px' }}>Ask</button>
+        <Box display="flex" alignItems="center">
+          <TextField
+            label="Enter your question"
+            variant="outlined"
+            fullWidth
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            required
+          />
+          <Button type="submit" variant="contained" color="primary" style={{ marginLeft: '10px' }}>
+            Ask
+          </Button>
+        </Box>
       </form>
+      {isLoading && (
+        <Box display="flex" justifyContent="center" marginTop="20px">
+          <CircularProgress />
+        </Box>
+      )}
       {error && (
-        <div style={{ color: 'red', marginTop: '20px' }}>
-          <p>{error}</p>
-        </div>
+        <Typography color="error" style={{ marginTop: '20px' }}>
+          {error}
+        </Typography>
       )}
       {answer && (
-        <div style={{ marginTop: '20px' }}>
-          <h2>Answer:</h2>
-          <p dangerouslySetInnerHTML={{ __html: formatAnswerWithLinks(answer) }}></p>
-        </div>
+        <Box marginTop="20px">
+          <Typography variant="h5">Answer:</Typography>
+          <Typography
+            dangerouslySetInnerHTML={{ __html: formatAnswerWithLinks(answer) }}
+            style={{ marginTop: '10px' }}
+          ></Typography>
+        </Box>
       )}
       {sources.length > 0 && (
-        <div style={{ marginTop: '20px' }}>
-          <h2>Sources:</h2>
+        <Box marginTop="20px">
+          <Typography variant="h5">Sources:</Typography>
           <ul>
             {sources.map((source, index) => (
               <li key={index}>
-                [{index + 1}] <a href={source.link} target="_blank" rel="noopener noreferrer">{source.title}</a>
+                [{index + 1}]{' '}
+                <Link href={source.link} target="_blank" rel="noopener noreferrer">
+                  {source.title}
+                </Link>
               </li>
             ))}
           </ul>
-        </div>
+        </Box>
       )}
-    </div>
+    </Container>
   );
 }
 
