@@ -28,12 +28,15 @@ async function performSearch(query) {
     key: apiKey,
     cx: searchEngineId,
     q: query,
-    num: 5, // Number of search results to retrieve (max 10)
+    num: 10, 
+    lr: 'lang_en', 
+    safe: 'active',
   };
 
   const response = await axios.get('https://www.googleapis.com/customsearch/v1', { params });
   return response.data;
 }
+
 
 // Helper function to format search results
 function formatSearchResults(searchResults) {
