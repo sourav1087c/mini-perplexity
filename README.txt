@@ -1,4 +1,4 @@
-# Mini Perplexity Q&A System
+# Mini-Perplexity Assignment 
 
 ## Table of Contents
 1. [Project Overview](#project-overview)
