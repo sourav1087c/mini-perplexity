@@ -1,7 +1,24 @@
 // frontend/src/App.js
 
 import React, { useState } from 'react';
-import { TextField, Button, CircularProgress, Typography, Link, Container, Box } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  TextField,
+  Button,
+  CircularProgress,
+  Alert,
+  Card,
+  CardContent,
+  Link,
+  IconButton,
+  InputAdornment,
+  Grid,
+  Fade,
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 function App() {
   const [question, setQuestion] = useState('');
@@ -38,7 +55,6 @@ function App() {
     }
   };
 
-  // Function to convert source numbers in the answer to hyperlinks
   const formatAnswerWithLinks = (answer) => {
     return answer.replace(/\[(\d+)\]/g, (match, number) => {
       const source = sources[number - 1];
@@ -51,60 +67,89 @@ function App() {
   };
 
   return (
-    <Container maxWidth="md" style={{ marginTop: '20px' }}>
-      <Typography variant="h4" gutterBottom>
-       What will you discover?
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Box display="flex" alignItems="center">
-          <TextField
-            label="Enter your question"
-            variant="outlined"
-            fullWidth
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            required
-          />
-          <Button type="submit" variant="contained" color="primary" style={{ marginLeft: '10px' }}>
-            Ask
-          </Button>
-        </Box>
-      </form>
-      {isLoading && (
-        <Box display="flex" justifyContent="center" marginTop="20px">
-          <CircularProgress />
-        </Box>
-      )}
-      {error && (
-        <Typography color="error" style={{ marginTop: '20px' }}>
-          {error}
-        </Typography>
-      )}
-      {answer && (
-        <Box marginTop="20px">
-          <Typography variant="h5">Answer:</Typography>
-          <Typography
-            dangerouslySetInnerHTML={{ __html: formatAnswerWithLinks(answer) }}
-            style={{ marginTop: '10px' }}
-          ></Typography>
-        </Box>
-      )}
-      {sources.length > 0 && (
-        <Box marginTop="20px">
-          <Typography variant="h5">Sources:</Typography>
-          <ul>
-            {sources.map((source, index) => (
-              <li key={index}>
-                [{index + 1}]{' '}
-                <Link href={source.link} target="_blank" rel="noopener noreferrer">
-                  {source.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Box>
-      )}
-    </Container>
+    <>
+      {/* AppBar for the header */}
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6">Mini Perplexity Q&A System</Typography>
+        </Toolbar>
+      </AppBar>
+
+      {/* Main content */}
+      <Container maxWidth="md" style={{ marginTop: '30px' }}>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={10}>
+              <TextField
+                label="Ask a question"
+                variant="outlined"
+                fullWidth
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                size="large"
+                startIcon={<SearchIcon />}
+              >
+                Ask
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+
+        {isLoading && (
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <CircularProgress />
+          </div>
+        )}
+
+        {error && (
+          <Alert severity="error" style={{ marginTop: '20px' }}>
+            {error}
+          </Alert>
+        )}
+
+        {answer && (
+          <Fade in={true}>
+            <Card style={{ marginTop: '20px' }}>
+              <CardContent>
+                <Typography variant="h5">Answer:</Typography>
+                <Typography
+                  variant="body1"
+                  dangerouslySetInnerHTML={{ __html: formatAnswerWithLinks(answer) }}
+                  style={{ marginTop: '10px' }}
+                ></Typography>
+              </CardContent>
+            </Card>
+          </Fade>
+        )}
+
+        {sources.length > 0 && (
+          <Fade in={true} style={{ transitionDelay: '200ms' }}>
+            <Card style={{ marginTop: '20px' }}>
+              <CardContent>
+                <Typography variant="h5">Sources:</Typography>
+                {sources.map((source, index) => (
+                  <Typography key={index} variant="body2" style={{ marginTop: '5px' }}>
+                    [{index + 1}]&nbsp;
+                    <Link href={source.link} target="_blank" rel="noopener noreferrer">
+                      {source.title}
+                    </Link>
+                  </Typography>
+                ))}
+              </CardContent>
+            </Card>
+          </Fade>
+        )}
+      </Container>
+    </>
   );
 }
 
