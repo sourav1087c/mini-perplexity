@@ -26,15 +26,15 @@
 13. [Conclusion](#conclusion)
 
 ## Project Overview
-The Mini Perplexity Q&A System is a web application that allows users to ask questions and receive concise, accurate answers along with source citations. Inspired by Perplexity AI, this system integrates web search capabilities with advanced language models to provide users with informative responses backed by reliable sources.
+The Mini Perplexity Q&A System aka Smart Spark (smartly answers like spark) is a web application that allows users to ask questions and receive concise, accurate answers along with source citations. Inspired by Perplexity AI, this system integrates web search capabilities with advanced language models to provide users with informative responses backed by reliable sources.
 
 ## Features
 - **User-Friendly Interface**: A clean and intuitive interface for users to input queries and view results.
 - **Web Search Integration**: Utilizes the Google Custom Search API to fetch relevant search results.
-- **Language Model Integration**: Employs OpenAI's GPT-3.5-turbo model to generate concise answers based on search results.
+- **Language Model Integration**: Employs OpenAI's GPT-4o model to generate concise answers based on search results.
 - **Source Citations**: Provides source references for each piece of information in the generated answer.
-- **Light/Dark Theme Toggle**: Allows users to switch between light and dark themes for better accessibility.
-- **Popular Questions Sidebar**: Features a sidebar with dynamically fetched popular questions to enhance user engagement.
+- **Light/Dark Theme Toggle**: Allows users to switch between light and dark themes for better accessibility. - Currently in development phase , will be updated soon
+- **Popular Questions Sidebar**: Features a sidebar with dynamically fetched popular questions to enhance user engagement.  - Currently in development phase , will be updated soon
 
 ## Technology Stack
 - **Frontend**: 
@@ -64,11 +64,11 @@ The application follows a client-server architecture:
 ### Backend Setup
 1. **Clone the Repository**:
     ```bash
-    git clone https://github.com/yourusername/mini-perplexity-qa-system.git
+    git clone https://github.com/sourav1087c/mini-perplexity.git
     ```
 2. **Navigate to Backend Directory**:
     ```bash
-    cd mini-perplexity-qa-system/backend
+    cd mini-perplexity/backend
     ```
 3. **Install Dependencies**:
     ```bash
@@ -151,20 +151,20 @@ The application follows a client-server architecture:
 3. **View the Answer**:
     - The generated answer will appear below the input field.
     - Source citations are provided with links to the original content.
-4. **Use the Popular Questions Sidebar**:
+4. **Use the Popular Questions Sidebar**:  (Under Development)
     - Click on any popular question to populate it in the input field.
     - Optionally, the question can auto-submit.
-5. **Toggle Theme**:
+5. **Toggle Theme**:  (Under Development)
     - Use the theme toggle button in the header to switch between light and dark modes.
 
 ## Design Decisions and Challenges
 ### API Integration
-- **Google Custom Search API** was chosen for its reliability and ease of use.
+- **Google Custom Search API** was chosen for its reliability and ease of use. Bing Search API was not available due to some reason while developing this.
     - **Challenge**: Managing API quotas and ensuring efficient use of requests.
     - **Solution**: Implemented caching to store search results for repeated queries.
 
 ### Language Model Selection
-- **OpenAI's GPT-3.5-turbo** model was used for answer generation.
+- **OpenAI's GPT-4o** model was used for answer generation.
     - **Challenge**: Handling API rate limits and costs.
     - **Solution**: Implemented error handling for rate limits and optimized prompts to minimize token usage.
 
@@ -213,6 +213,11 @@ Implemented comprehensive error messages for user feedback. Used specific status
 - **Improved Error Messages**: Provide more detailed feedback.
 - **Security Enhancements**: Implement rate limiting.
 - **Accessibility Improvements**: Meet WCAG standards.
+- **Add functionality for light and dark theme** : Add toggle for light and dark themes
+- **Add Sign and user profiles for role based different subscription levels**
+- **Functionality Improvement**: Multimedia search results.
+- **Functionality Improvement**: Record user history of chats
+  
 
 ## Conclusion
-The Mini Perplexity Q&A System integrates web search capabilities with advanced language models to provide users with concise answers backed by reliable sources. Thoughtful design decisions and careful implementation offer a user-friendly experience, handling complexities like API integrations and error management effectively.
+The SmartSpark integrates web search capabilities with advanced language models to provide users with concise answers backed by reliable sources. Thoughtful design decisions and careful implementation offer a user-friendly experience, handling complexities like API integrations and error management effectively.
