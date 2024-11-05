@@ -33,6 +33,18 @@ function App() {
     }
   };
 
+  // Function to convert source numbers in the answer to hyperlinks
+  const formatAnswerWithLinks = (answer) => {
+    return answer.replace(/\[(\d+)\]/g, (match, number) => {
+      const source = sources[number - 1];
+      if (source) {
+        return `<a href="${source.link}" target="_blank" rel="noopener noreferrer">[${number}]</a>`;
+      } else {
+        return match;
+      }
+    });
+  };
+
   return (
     <div style={{ padding: '20px' }}>
       <h1>Mini Perplexity Q&A System</h1>
@@ -55,7 +67,7 @@ function App() {
       {answer && (
         <div style={{ marginTop: '20px' }}>
           <h2>Answer:</h2>
-          <p>{answer}</p>
+          <p dangerouslySetInnerHTML={{ __html: formatAnswerWithLinks(answer) }}></p>
         </div>
       )}
       {sources.length > 0 && (
