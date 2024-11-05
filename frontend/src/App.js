@@ -71,7 +71,7 @@ function App() {
       {/* AppBar for the header */}
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">Mini Perplexity Q&A System</Typography>
+          <Typography variant="h6">InsightLite</Typography>
         </Toolbar>
       </AppBar>
 
