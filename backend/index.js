@@ -19,8 +19,17 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Function to perform search using Google Custom Search API
+// Cache to store search results for repeated queries
+const cache = new Map();
+
+// Function to perform search using Google Custom Search API with caching
 async function performSearch(query) {
+  const cacheKey = query.toLowerCase();
+  if (cache.has(cacheKey)) {
+    console.log('Returning cached search results');
+    return cache.get(cacheKey);
+  }
+
   const apiKey = process.env.GOOGLE_API_KEY;
   const searchEngineId = process.env.SEARCH_ENGINE_ID;
 
@@ -34,6 +43,7 @@ async function performSearch(query) {
   };
 
   const response = await axios.get('https://www.googleapis.com/customsearch/v1', { params });
+  cache.set(cacheKey, response.data);
   return response.data;
 }
 

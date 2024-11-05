@@ -53,7 +53,7 @@ function App() {
   return (
     <Container maxWidth="md" style={{ marginTop: '20px' }}>
       <Typography variant="h4" gutterBottom>
-        Mini Perplexity Q&A System
+       What will you discover?
       </Typography>
       <form onSubmit={handleSubmit}>
         <Box display="flex" alignItems="center">
