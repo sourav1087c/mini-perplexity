@@ -42,31 +42,29 @@ async function performSearch(query) {
 function formatSearchResults(searchResults) {
   let formattedResults = '';
   searchResults.items.forEach((item, index) => {
-    formattedResults += `[${index + 1}] ${item.title}: ${item.snippet}\nURL: ${item.link}\n\n`;
+    formattedResults += `[${index + 1}] "${item.title}" - ${item.snippet}\nURL: ${item.link}\n\n`;
   });
   return formattedResults;
 }
 
 // Function to generate answer using OpenAI API
 async function generateAnswer(question, searchResults) {
-  // Prepare the messages for the Chat Completion API
   const messages = [
     {
       role: 'system',
-      content: 'You are an AI assistant that provides concise answers based on search results and includes source numbers in square brackets like [1].',
+      content: `You are an AI assistant that provides concise, factual answers based on the provided search results. Always include source numbers in square brackets like [1] after the information. Do not include information that is not in the search results.`,
     },
     {
       role: 'user',
-      content: `Question: ${question}\n\nSearch Results:\n${formatSearchResults(searchResults)}\nProvide a concise answer to the question above based on the search results. Include source numbers in square brackets.`,
+      content: `Answer the following question based on the search results below:\n\nQuestion: ${question}\n\nSearch Results:\n${formatSearchResults(searchResults)}`,
     },
   ];
 
-  // Call the OpenAI Chat Completion API
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: 'gpt-3.5-turbo',
     messages: messages,
-    max_tokens: 150,
-    temperature: 0.7,
+    max_tokens: 200,
+    temperature: 0,
   });
 
   const answer = response.choices[0].message.content.trim();
